@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Reservation.css";
-import supabase from "../../supabaseClient";
+import { supabase } from "../../api/supabaseClient";
 import { zones } from "../../assets/assets";
 
 const Reservation = () => {
