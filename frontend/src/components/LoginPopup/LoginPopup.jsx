@@ -3,12 +3,14 @@ import { assets } from '../../assets/assets'
 import { loginUser, registerUser } from '../../api/auth'
 import React, { useState, useEffect } from 'react'
 import { useAuth } from "../../context/AuthContext"
-
+import { supabase } from "../../api/supabaseClient"
+import { useNavigate } from "react-router-dom"
 const LoginPopup = ({ setShowLogin, role, setRole, roleFixed, authMode }) => {
 
   const { login } = useAuth()   // 🔥 AJOUT IMPORTANT
 
   const [currState, setCurrState] = useState("S'inscrire")
+  const navigate = useNavigate()
 
   useEffect(() => {
     setCurrState(authMode)
@@ -63,35 +65,64 @@ const LoginPopup = ({ setShowLogin, role, setRole, roleFixed, authMode }) => {
 
   // ---------------- SIGNUP ----------------
   const handleSubmit = async (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    const rawPhone = form.telephone.replace(/\D/g, "")
-
-    if (!/^[5-7][0-9]{8}$/.test(rawPhone)) {
-      return alert("Téléphone invalide")
-    }
-
-    const cleanPhone = "0" + rawPhone
-
-    if (!isValidName(form.nom)) return alert("Nom invalide")
-    if (!isValidName(form.prenom)) return alert("Prénom invalide")
-    if (!isValidEmail(form.email)) return alert("Email invalide")
-    if (!isStrongPassword(form.password)) return alert("Mot de passe trop faible")
-
-    try {
-      await registerUser(
-        { ...form, telephone: cleanPhone },
-        role
-      )
-
-      alert("Compte créé ✔")
-      setCurrState("Se connecter")
-
-    } catch (err) {
-      console.log(err)
-      alert("Erreur inscription")
-    }
+  if (
+    !form.nom ||
+    !form.prenom ||
+    !form.email ||
+    !form.telephone ||
+    !form.password
+  ) {
+    return alert("Veuillez remplir tous les champs")
   }
+
+  const rawPhone = form.telephone.replace(/\D/g, "")
+
+  if (!/^[5-7][0-9]{8}$/.test(rawPhone)) {
+    return alert("Téléphone invalide")
+  }
+
+  const cleanPhone = "0" + rawPhone
+
+  if (!isValidName(form.nom)) return alert("Nom invalide")
+  if (!isValidName(form.prenom)) return alert("Prénom invalide")
+  if (!isValidEmail(form.email)) return alert("Email invalide")
+  if (!isStrongPassword(form.password)) return alert("Mot de passe trop faible")
+
+  const { data: existingUser } = await supabase
+    .from("utilisateur")
+    .select("*")
+    .eq("email", form.email)
+    .maybeSingle()
+
+  if (existingUser) {
+    return alert("Cet email existe déjà")
+  }
+
+  try {
+    const user = await registerUser(
+      { ...form, telephone: cleanPhone },
+      role
+    )
+
+    login(user)
+
+    // 🔥 AJOUT REDIRECTION
+    if (role === "client") {
+      navigate("/client")
+    } else if (role === "livreur") {
+      navigate("/livreur")
+    }
+
+    alert("Compte créé ✔")
+    setCurrState("Se connecter")
+
+  } catch (err) {
+    console.log(err)
+    alert("Erreur inscription")
+  }
+}
 
   // ---------------- LOGIN ----------------
   const handleLogin = async (e) => {
@@ -99,10 +130,20 @@ const LoginPopup = ({ setShowLogin, role, setRole, roleFixed, authMode }) => {
 
     try {
       const user = await loginUser(form.email, form.password)
+        console.log("LOGIN USER =", user)
 
-      login(user)   // 🔥 REMPLACE localStorage
+      login(user)
 
-      alert("Connexion réussie ✔")
+      if (user.role === "client") {
+        navigate("/client")
+      }
+      else if (user.role === "livreur") {
+        navigate("/livreur")
+      }
+      else if (user.role === "admin") {
+        navigate("/admin")
+      }
+
       setShowLogin(false)
 
     } catch (err) {

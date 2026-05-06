@@ -1,97 +1,142 @@
 import React, { useState, useContext } from "react";
 import "./ClientNavbar.css";
 import { assets } from "../../assets/assets";
-import { useNavigate, useLocation } from "react-router-dom"; // 🔥 ajoute useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
-
+import { useAuth } from "../../context/AuthContext"
+import { FaSignOutAlt } from "react-icons/fa";
 const ClientNavbar = () => {
-  const [menu, setMenu] = useState("Livraison");
-  const navigate = useNavigate();
-  const location = useLocation(); // 🔥 détecte la page actuelle
-  const { getTotalItems } = useContext(StoreContext);
+    const [menu, setMenu] = useState("Livraison");
+    const navigate = useNavigate();
+    const location = useLocation(); // 🔥 détecte la page Aactuelle
+    const { getTotalItems } = useContext(StoreContext);
+    const { logout, user } = useAuth()
+    console.log("USER =", user)
+    const isClient = user?.role === "client"
 
-  // 🔥 pages où la navbar doit avoir un fond coloré
-  const isCartPage = location.pathname === "/cart";
 
-  return (
-    <div className={`client-navbar ${isCartPage ? "navbar-cart" : ""}`}>
+    const handleLogout = () => {
+        const confirmLogout = window.confirm("Es-tu sûr de vouloir te déconnecter ?")
 
-     
-      <div className="client-navbar-left">
-        <img
-          src={assets.logo}
-          alt="logo"
-          className="logo"
-          onClick={() => navigate("/")}
-        />
-      </div>
+        if (!confirmLogout) return
 
-    
-      <div className="client-navbar-center">
-        <ul className="client-navbar-menu">
+        logout()
+        navigate("/")
+    }
+    const handleProfile = () => {
+        if (!user) {
+            navigate("/")
+            return
+        }
 
-          <li
-            onClick={() => {
-              setMenu("Livraison");
-              navigate("/livraison");
-            }}
-            className={menu === "Livraison" ? "active" : ""}
-          >
-            Livraison
-          </li>
+        if (user.role === "client") {
+            navigate("/client")
+        }
+        else if (user.role === "livreur") {
+            navigate("/livreur")
+        }
+        else if (user.role === "admin") {
+            navigate("/admin")
+        }
+        else {
+            navigate("/")
+        }
+    }
 
-          <li
-            onClick={() => {
-              setMenu("Réservation");
-              navigate("/reservation");
-            }}
-            className={menu === "Réservation" ? "active" : ""}
-          >
-            Réservation
-          </li>
+    // 🔥 pages où la navbar doit avoir un fond coloré
+    const isCartPage = location.pathname === "/cart";
 
-          <li
-            onClick={() => {
-              setMenu("Précommande");
-              navigate("/reservation");
-            }}
-            className={menu === "Précommande" ? "active" : ""}
-          >
-            Réservation + Précommande
-          </li>
+    return (
+        <div className={`client-navbar ${isCartPage ? "navbar-cart" : ""}`}>
 
-        </ul>
-      </div>
 
-      {/* RIGHT */}
-      <div className="client-navbar-right">
+            <div className="client-navbar-left">
+                <img
+                    src={assets.logo}
+                    alt="logo"
+                    className="logo"
+                    onClick={() => navigate("/")}
+                />
+            </div>
 
-        <div className="icon-wrapper" onClick={() => navigate("/cart")}>
-          <img src={assets.cart} alt="cart" className="iconcart" />
 
-          {getTotalItems() > 0 && (
-            <span className="cart-dot">{getTotalItems()}</span>
-          )}
+            <div className="client-navbar-center">
+
+                {isClient && (
+                    <ul className="client-navbar-menu">
+
+                        <li
+                            onClick={() => {
+                                setMenu("Livraison");
+                                navigate("/livraison");
+                            }}
+                            className={menu === "Livraison" ? "active" : ""}
+                        >
+                            Livraison
+                        </li>
+
+                        <li
+                            onClick={() => {
+                                setMenu("Réservation");
+                                navigate("/reservation");
+                            }}
+                            className={menu === "Réservation" ? "active" : ""}
+                        >
+                            Réservation
+                        </li>
+
+                        <li
+                            onClick={() => {
+                                setMenu("Précommande");
+                                navigate("/respre");
+                            }}
+                            className={menu === "Précommande" ? "active" : ""}
+                        >
+                            Réservation + Précommande
+                        </li>
+
+                    </ul>
+                )}
+
+            </div>
+
+            {/* RIGHT */}
+            <div className="client-navbar-right">
+
+                {isClient && (
+                    <div className="icon-wrapper" onClick={() => navigate("/cart")}>
+                        <img src={assets.cart} alt="cart" className="iconcart" />
+
+                        {getTotalItems() > 0 && (
+                            <span className="cart-dot">{getTotalItems()}</span>
+                        )}
+                    </div>
+                )}
+
+
+
+                <img
+                    src={assets.bell}
+                    alt="notif"
+                    className="iconbell"
+                    onClick={() => navigate("/notifications")}
+                />
+
+                <img
+                    src={assets.user}
+                    alt="user"
+                    className="iconuser"
+                    onClick={handleProfile}
+                />
+                <FaSignOutAlt
+                    className="iconlogout"
+                    onClick={handleLogout}
+                />
+
+            </div>
+
         </div>
-
-        <img
-          src={assets.bell}
-          alt="notif"
-          className="iconbell"
-          onClick={() => navigate("/notifications")}
-        />
-
-        <img
-          src={assets.user}
-          alt="user"
-          className="iconuser"
-          onClick={() => navigate("/client")}
-        />
-
-      </div>
-
-    </div>
-  );
+    );
 };
 
 export default ClientNavbar;

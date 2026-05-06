@@ -2,7 +2,7 @@ import './Accueil.css'
 import Header from '../../components/Header/Header'
 import CategoryList from '../../components/CategoryList/CategoryList'
 import React, { useState } from 'react'
-import DisplayFood from '../DisplayFood/DisplayFood'
+import PlatsPopulaire from '../../components/PlatsPopulaire/PlatsPopulaire'
 import Services from '../../components/Services/Services'
 
 const Accueil = ({
@@ -23,22 +23,31 @@ const Accueil = ({
         setRole={setRole}
         setAuthMode={setAuthMode}
         setRoleFixed={setRoleFixed}
-      />
-
-      <CategoryList
-        category={category}
-        setCategory={setCategory}
-      />
-
-      <DisplayFood category={category} />
-
-      <Services
         user={user}
-        setShowLogin={setShowLogin}
-        setRole={setRole}
-        setRoleFixed={setRoleFixed}
-        setAuthMode={setAuthMode}
       />
+
+      {/* 👤 VISITEUR SEULEMENT */}
+      {!user && (
+        <>
+          {/* ✔ catégories (tu les veux) */}
+          <CategoryList
+            category={category}
+            setCategory={setCategory}
+          />
+
+          {/* ✔ plats populaires */}
+          <PlatsPopulaire />
+
+          {/* ✔ services */}
+          <Services
+            setShowLogin={setShowLogin}
+            setRole={setRole}
+            setRoleFixed={setRoleFixed}
+            setAuthMode={setAuthMode}
+            user={user}
+          />
+        </>
+      )}
 
     </div>
   )

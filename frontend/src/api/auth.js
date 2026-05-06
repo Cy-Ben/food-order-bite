@@ -32,7 +32,7 @@ export const registerUser = async (form, role) => {
 
   if (error) throw error;
 
-  const id = user.idutilisateur;
+  const id = user.idutilisateur || user.id;
 
   if (role === "client") {
     await supabase.from('client').insert({

@@ -62,8 +62,8 @@
   background: url("../../assets/resto.jpg") center/cover no-repeat !important;
 }
 .iconcart {
-  width: 150px;
-  height: 150px;
+  width: 145px;
+  height: 145px;
   cursor: pointer;
   margin-right: -35px;
 }
@@ -97,4 +97,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.iconlogout {
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  margin-left: 12px;
+  transition: 0.2s;
+}
+
+.iconlogout:hover {
+  color: white ;
+  transform: scale(1.1);
 }

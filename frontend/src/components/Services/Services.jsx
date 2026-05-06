@@ -5,30 +5,31 @@ import StarRating from '../StarRating/StarRating'
 import clientImg from '../../assets/client.jpg'
 import livreurImg from '../../assets/livreur.jpg'
 import adminImg from '../../assets/resto.jpg'
+import { FaSmile,FaUser} from "react-icons/fa"
 
 const Services = ({
   setShowLogin,
   setRole,
   setRoleFixed,
-  setAuthMode
+  setAuthMode,
+  user
 }) => {
 
   const handleAccess = (role, path) => {
 
-  setRole(role)
-  setRoleFixed(true)
+    setRole(role)
+    setRoleFixed(true)
 
-  // toujours login
-  setAuthMode("Se connecter")
+    setAuthMode("Se connecter")
+    setShowLogin(true)
 
-  setShowLogin(true)
-
-  sessionStorage.setItem("targetPath", path)
-}
+    sessionStorage.setItem("targetPath", path)
+  }
 
   return (
     <div className='services'>
 
+      {/*  RESTAURANT TOUJOURS VISIBLE */}
       <div className="restaurant">
         <img src={restoImg} alt="restaurant" />
 
@@ -49,26 +50,34 @@ const Services = ({
         </div>
       </div>
 
-      <h2 className="title">Nos services</h2>
+      <h2 className="title">
+        {user ? (
+          <>
+            <FaSmile /> Bienvenue </>) : (<>    <FaUser /> Nos services </>)}
+      </h2>
 
-      <div className="services-grid">
+      {/*CARTES SEULEMENT SI NON CONNECTÉ */}
+      {!user && (
+        <div className="services-grid">
 
-        <div className="service-card" onClick={() => handleAccess("client", "/")}>
-          <img src={clientImg} alt="client" />
-          <h3>Client</h3>
+          <div className="service-card" onClick={() => handleAccess("client", "/")}>
+            <img src={clientImg} alt="client" />
+            <h3>Client</h3>
+          </div>
+
+          <div className="service-card" onClick={() => handleAccess("livreur", "/livraison")}>
+            <img src={livreurImg} alt="livreur" />
+            <h3>Livreur</h3>
+          </div>
+
+          <div className="service-card" onClick={() => handleAccess("admin", "/admin")}>
+            <img src={adminImg} alt="admin" />
+            <h3>Admin</h3>
+          </div>
+
         </div>
+      )}
 
-        <div className="service-card" onClick={() => handleAccess("livreur", "/livraison")}>
-          <img src={livreurImg} alt="livreur" />
-          <h3>Livreur</h3>
-        </div>
-
-        <div className="service-card" onClick={() => handleAccess("admin", "/admin")}>
-          <img src={adminImg} alt="admin" />
-          <h3>Admin</h3>
-        </div>
-
-      </div>
     </div>
   )
 }

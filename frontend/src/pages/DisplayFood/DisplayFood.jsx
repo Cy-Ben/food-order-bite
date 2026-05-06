@@ -8,7 +8,7 @@ const DisplayFood = ({ category }) => {
 
   const [plats, setPlats] = useState([])
   console.log("PLATS 👉", plats)
-console.log("CATEGORY 👉", category)
+  console.log("CATEGORY 👉", category)
 
   useEffect(() => {
     const fetchPlats = async () => {
@@ -32,16 +32,16 @@ console.log("CATEGORY 👉", category)
 
         {plats
           .filter(item =>
-  category === "Tout" ||
-  item.categorie?.trim().toLowerCase() === category.trim().toLowerCase()
-)
+            category === "Tout" ||
+            item.categorie?.trim().toLowerCase() === category.trim().toLowerCase()
+          )
           .map((item) => {
 
             // 🔥 IMAGE DIRECTE (PAS assets)
             const imageUrl = `/images/${item.image_name}`
-           console.log("ITEM 👉", item)
-console.log("categorie DB 👉", item.categorie)
-console.log("image_name 👉", item.image_name)
+            console.log("ITEM 👉", item)
+            console.log("categorie DB 👉", item.categorie)
+            console.log("image_name 👉", item.image_name)
             return (
               <FoodItem
                 key={item.idplat}
@@ -49,7 +49,7 @@ console.log("image_name 👉", item.image_name)
                 name={item.nomplat}
                 description={item.description}
                 price={item.prix}
-                 image={imagesMap[item.image_name]}
+                image={imagesMap[item.image_name]}
               />
             )
           })}

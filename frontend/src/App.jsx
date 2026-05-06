@@ -13,22 +13,18 @@ import PublicLayout from "./layouts/PublicLayout";
 import ClientLayout from "./layouts/ClientLayout";
 import Livreur from "./pages/Livreur/Livreur";
 import ResePrecommande from "./pages/ResePrecommande/ResePrecommande";
-
+import ProtectedRoute from "./routes/ProtectedRoute"
+import { useAuth } from "./context/AuthContext"
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
-  const [user, setUser] = useState(null);
+  const { user } = useAuth()
   const [role, setRole] = useState("");
   const [roleFixed, setRoleFixed] = useState(false);
   const [authMode, setAuthMode] = useState("S'inscrire");
 
-  useEffect(() => {
-    const saved = localStorage.getItem("user");
-    if (saved) {
-      setUser(JSON.parse(saved));
-    }
-  }, []);
+  
 
   return (
     <>
@@ -71,58 +67,72 @@ const App = () => {
           <Route
             path="/livraison"
             element={
-              <ClientLayout transparent={true}>
-                <Livraison />
-              </ClientLayout>
+              <ProtectedRoute role="client">
+                <ClientLayout transparent={true}>
+                  <Livraison />
+                </ClientLayout>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/cart"
             element={
-              <ClientLayout >
-                <Cart />
-              </ClientLayout>
+              <ProtectedRoute role="client">
+                <ClientLayout >
+                  <Cart />
+                </ClientLayout>
+              </ProtectedRoute>
             }
           />
           <Route
             path="/reservation"
             element={
-              <ClientLayout hideCart={true} transparent={true}>
-                <Reservation />
-              </ClientLayout>
+              <ProtectedRoute role="client">
+                <ClientLayout hideCart={true} transparent={true}>
+                  <Reservation />
+                </ClientLayout>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="/client"
             element={
-              <ClientLayout transparent={true}>
-                <EspaceClient />
-              </ClientLayout>
+              <ProtectedRoute role="client">
+                <ClientLayout transparent={true}>
+                  <EspaceClient />
+                </ClientLayout>
+              </ProtectedRoute>
             }
           />
           <Route path="/admin" element={
-            <ClientLayout transparent={true} hideCart={true}  >
-              <Admin />
-            </ClientLayout>
+            <ProtectedRoute role="admin">
+              <ClientLayout transparent={true} hideCart={true}  >
+                <Admin />
+              </ClientLayout>
+            </ProtectedRoute>
           } />
           <Route path="/livreur" element={
-            <ClientLayout transparent={true} hideCart={true}  >
-              <Livreur />
+            <ProtectedRoute role="livreur">
+              <ClientLayout transparent={true} hideCart={true}  >
+                <Livreur />
 
-            </ClientLayout>
+              </ClientLayout>
+            </ProtectedRoute>
 
-          }/>
+          } />
           <Route path="/respre" element={
-            <ClientLayout transparent={true} hideCart={true}>
-              <ResePrecommande/>
+            <ProtectedRoute role="client">
+              <ClientLayout transparent={true} hideCart={true}>
+                <ResePrecommande />
 
-            </ClientLayout>
-          }/>
-          
+              </ClientLayout>
+            </ProtectedRoute>
+          } />
 
-          
+
+
 
 
         </Routes>
