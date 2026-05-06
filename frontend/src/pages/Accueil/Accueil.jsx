@@ -26,19 +26,31 @@ const Accueil = ({
         user={user}
       />
 
-      {/* 👤 VISITEUR SEULEMENT */}
+      {/* 👤 VISITEUR NON CONNECTÉ */}
       {!user && (
         <>
-          {/* ✔ catégories (tu les veux) */}
           <CategoryList
             category={category}
             setCategory={setCategory}
           />
-
-          {/* ✔ plats populaires */}
           <PlatsPopulaire />
+          <Services
+            setShowLogin={setShowLogin}
+            setRole={setRole}
+            setRoleFixed={setRoleFixed}
+            setAuthMode={setAuthMode}
+            user={user}
+          />
+        </>
+      )}
 
-          {/* ✔ services */}
+      {/* ✅ UTILISATEUR CONNECTÉ */}
+      {user && (
+        <>
+          <CategoryList
+            category={category}
+            setCategory={setCategory}
+          />
           <Services
             setShowLogin={setShowLogin}
             setRole={setRole}
