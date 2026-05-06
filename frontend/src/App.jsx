@@ -24,7 +24,7 @@ const App = () => {
   const [roleFixed, setRoleFixed] = useState(false);
   const [authMode, setAuthMode] = useState("S'inscrire");
 
-  
+
 
   return (
     <>
@@ -96,16 +96,11 @@ const App = () => {
             }
           />
 
-          <Route
-            path="/client"
-            element={
-              <ProtectedRoute role="client">
-                <ClientLayout transparent={true}>
-                  <EspaceClient />
-                </ClientLayout>
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/client" element={
+            <ClientLayout transparent={true}>
+              <EspaceClient user={user} />  {/* 🔥 ajoute user */}
+            </ClientLayout>
+          } />
           <Route path="/admin" element={
             <ProtectedRoute role="admin">
               <ClientLayout transparent={true} hideCart={true}  >
