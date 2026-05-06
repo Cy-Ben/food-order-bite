@@ -49,7 +49,11 @@ const DisplayFood = ({ category }) => {
                 name={item.nomplat}
                 description={item.description}
                 price={item.prix}
-                image={imagesMap[item.image_name]}
+                image={
+                  item.image_name?.startsWith("http")
+                    ? item.image_name   // 🔥 image URL (admin)
+                    : imagesMap[item.image_name] // 🔥 image locale
+                }
               />
             )
           })}
