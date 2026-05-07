@@ -12,7 +12,6 @@ import dessert from './dessert.jpg'
 import drink from './drink.jpg'
 import sauce from './sauce.jpg'
 import pasta from './pasta.jpg'
-import spaghetticarbonara from './spaghetticarbonara.jpg'
 import discount10 from './discount10.png'
 import discount15 from './discount15.png'
 import discount20 from './discount20.png'
@@ -41,6 +40,7 @@ import alfredopasta from './alfredopasta.jpg'
 import bolognese from './bolognese.jpg'
 import meatballs from './meatballs.jpg'
 import raviole from './raviole.jpg'
+import carbonara from './carbonara.jpg'
 
 import barbecusticks from './barbecusticks.jpg'
 import cotes from './cotes.jpg'
@@ -208,7 +208,7 @@ export const plats = [
   {
     _id: 3,
     name: "Pasta Carbonara",
-    image: spaghetticarbonara,
+    image: carbonara,
     desc: "Crème, bacon, parmesan",
     price: 800,
     rating: 4.6,
@@ -222,7 +222,7 @@ export const plats = [
 
 
 
-// 🔥 MAP IMAGES SUPABASE → REACT
+
 export const imagesMap = {
   "BBQburger.jpg": BBQburger,
   "cheeseburger.jpg": cheeseburger,
@@ -243,6 +243,8 @@ export const imagesMap = {
   "bolognese.jpg": bolognese,
   "meatballs.jpg": meatballs,
   "raviole.jpg": raviole,
+ "carbonara.jpg": carbonara,
+
 
   "barbecusticks.jpg": barbecusticks,
   "cotes.jpg": cotes,

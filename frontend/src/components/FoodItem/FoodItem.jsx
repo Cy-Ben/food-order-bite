@@ -46,10 +46,9 @@ const FoodItem = ({ id, name, description, image, item }) => {
 
       <div className="food-item-img-container">
         <img
-          className='food-item-image'
-          src={getImageSrc(item.image_name)}
-          alt={name}
-        />
+  className='food-item-image'
+  src={image}
+/>
 
 
         {/* BADGE PROMO */}

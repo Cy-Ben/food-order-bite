@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Admin.css";
 
 import PlatsPage from "../../components/PlatsPage/PlatsPage";
+import CategoryList from "../../components/CategoryList/CategoryList";
 
 import {
     FaStore, FaChartBar, FaBox, FaHamburger, FaUsers,
@@ -16,12 +17,16 @@ const Admin = () => {
     const [page, setPage] = useState("profil");
     const [open, setOpen] = useState(false);
 
-    // 🔥 PROMOTIONS STATES
+    // PROMOTIONS STATES
     const [plats, setPlats] = useState([]);
     const [selectedPlats, setSelectedPlats] = useState([]);
     const [taux, setTaux] = useState(20);
     const [debut, setDebut] = useState("");
     const [fin, setFin] = useState("");
+    const [promotions, setPromotions] = useState([]);
+
+    // CATEGORY STATE
+    const [category, setCategory] = useState("Tout");
 
     const menu = [
         { key: "profil", label: "Profil", icon: <FaStore /> },
@@ -36,17 +41,32 @@ const Admin = () => {
         { key: "paiements", label: "Paiements", icon: <FaCreditCard /> },
     ];
 
-    // 🔥 CHARGER PLATS
+    // CHARGER PLATS
     useEffect(() => {
         const fetchPlats = async () => {
             const { data } = await supabase.from("plat").select("*");
             setPlats(data || []);
         };
-
         fetchPlats();
     }, []);
 
-    // 🔥 SELECT PLATS
+    // CHARGER PROMOTIONS
+    useEffect(() => {
+        const fetchPromotions = async () => {
+            const { data } = await supabase
+                .from("promotionplat")
+                .select(`*, plat(nomplat)`);
+            setPromotions(data || []);
+        };
+        fetchPromotions();
+    }, []);
+
+    // RESET SELECTION SI CATEGORY CHANGE
+    useEffect(() => {
+        setSelectedPlats([]);
+    }, [category]);
+
+    // SELECT PLATS
     const togglePlat = (id) => {
         setSelectedPlats((prev) =>
             prev.includes(id)
@@ -55,22 +75,49 @@ const Admin = () => {
         );
     };
 
-    // 🔥 CREATE PROMO
+    // SUPPRIMER PROMOTION
+    const supprimerPromo = async (idpromoplat) => {
+        await supabase
+            .from("promotionplat")
+            .delete()
+            .eq("idpromoplat", idpromoplat);
+
+        setPromotions(prev => prev.filter(p => p.idpromoplat !== idpromoplat));
+    };
+
+    // CREATE PROMO
     const appliquerPromo = async () => {
+
+        if (!debut || !fin) return alert("Remplir les dates !");
+        if (new Date(debut) >= new Date(fin)) return alert("Dates invalides !");
+        if (selectedPlats.length === 0) return alert("Sélectionner des plats !");
+
         for (let idplat of selectedPlats) {
-            await supabase.from("promotionplat").insert([
-                {
+            const { data } = await supabase
+                .from("promotionplat")
+                .insert([{
                     idplat,
                     tauxreduction: taux,
                     datedebutpromo: debut,
                     datefinpromo: fin
-                }
-            ]);
+                }])
+                .select(`*, plat(nomplat)`)
+                .single();
+
+            if (data) {
+                setPromotions(prev => [...prev, data]);
+            }
         }
 
         alert("Promotion ajoutée !");
         setSelectedPlats([]);
     };
+
+    // FILTRAGE PLATS
+    const platsFiltres =
+        category === "Tout"
+            ? plats
+            : plats.filter(p => p.categorie === category); // ⚠️ adapte si besoin
 
     return (
         <div className="admin-page">
@@ -87,8 +134,6 @@ const Admin = () => {
 
                 {/* SIDEBAR */}
                 <div className={`sidebar ${open ? "open" : ""}`}>
-
-                    {/* bouton menu */}
                     <button className="toggle-btn" onClick={() => setOpen(!open)}>
                         <FaBars />
                     </button>
@@ -130,71 +175,103 @@ const Admin = () => {
                     )}
 
                     {page === "commandes" && <h2>Commandes</h2>}
-
                     {page === "plats" && <PlatsPage />}
-
                     {page === "clients" && <h2>Clients</h2>}
                     {page === "livreurs" && <h2>Livreurs</h2>}
 
                     {/* PROMOTIONS */}
                     {page === "promotions" && (
-                        <div>
+                        <div className="promotions-container">
+
                             <h2>Gestion des promotions</h2>
 
-                            <div style={{ marginBottom: "20px" }}>
-                                <select
-                                    value={taux}
-                                    onChange={(e) => setTaux(Number(e.target.value))}
-                                >
-                                    <option value={10}>10%</option>
-                                    <option value={15}>15%</option>
-                                    <option value={20}>20%</option>
-                                    <option value={50}>50%</option>
-                                    <option value={75}>75%</option>
-                                </select>
+                            {/* FORMULAIRE */}
+                            <div className="promo-form">
 
-                                <input
-                                    type="date"
-                                    onChange={(e) => setDebut(e.target.value)}
-                                />
+                                <div className="promo-form-row">
+                                    <label>Taux de réduction</label>
+                                    <select
+                                        value={taux}
+                                        onChange={(e) => setTaux(Number(e.target.value))}
+                                    >
+                                        <option value={10}>10%</option>
+                                        <option value={15}>15%</option>
+                                        <option value={20}>20%</option>
+                                        <option value={50}>50%</option>
+                                        <option value={75}>75%</option>
+                                    </select>
+                                </div>
 
-                                <input
-                                    type="date"
-                                    onChange={(e) => setFin(e.target.value)}
-                                />
+                                <div className="promo-form-row">
+                                    <label>Date début</label>
+                                    <input
+                                        type="date"
+                                        value={debut}
+                                        onChange={(e) => setDebut(e.target.value)}
+                                    />
+                                </div>
 
-                                <button onClick={appliquerPromo}>
+                                <div className="promo-form-row">
+                                    <label>Date fin</label>
+                                    <input
+                                        type="date"
+                                        value={fin}
+                                        onChange={(e) => setFin(e.target.value)}
+                                    />
+                                </div>
+
+                                <button className="promo-btn" onClick={appliquerPromo}>
                                     Créer promotion
                                 </button>
                             </div>
 
                             <hr />
 
+                            {/* CATEGORIES */}
+                            <CategoryList
+                                category={category}
+                                setCategory={setCategory}
+                            />
+
                             <h3>Choisir les plats</h3>
 
-                            <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                {plats.map((p) => (
+                            {/* PLATS FILTRÉS */}
+                            <div className="promo-plats-grid">
+                                {platsFiltres.map((p) => (
                                     <div
                                         key={p.idplat}
                                         onClick={() => togglePlat(p.idplat)}
-                                        style={{
-                                            padding: "10px",
-                                            margin: "5px",
-                                            border: "1px solid #ccc",
-                                            cursor: "pointer",
-                                            borderRadius: "8px",
-                                            background: selectedPlats.includes(p.idplat)
-                                                ? "green"
-                                                : "white",
-                                            color: selectedPlats.includes(p.idplat)
-                                                ? "white"
-                                                : "black"
-                                        }}
+                                        className={`promo-plat-card ${selectedPlats.includes(p.idplat) ? "selected" : ""}`}
                                     >
                                         {p.nomplat}
                                     </div>
                                 ))}
                             </div>
+
+                            <hr />
+
+                            {/* PROMOTIONS */}
+                            <h3>Promotions actives</h3>
+
+                            <div className="promo-list">
+                                {promotions.length === 0 && <p>Aucune promotion</p>}
+
+                                {promotions.map((promo) => (
+                                    <div key={promo.idpromoplat} className="promo-item">
+                                        <span>{promo.plat?.nomplat}</span>
+                                        <span>{promo.tauxreduction}%</span>
+                                        <span>{promo.datedebutpromo} → {promo.datefinpromo}</span>
+
+                                        <button
+                                            className="promo-delete-btn"
+                                            onClick={() => supprimerPromo(promo.idpromoplat)}
+                                        >
+                                            Supprimer
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+
                         </div>
                     )}
 

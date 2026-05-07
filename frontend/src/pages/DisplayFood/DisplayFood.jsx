@@ -51,17 +51,27 @@ const DisplayFood = ({ category }) => {
           )
           .map((item) => {
 
+            const key = item.image_name?.replace(/\r/g, '').trim()
+
+            const image =
+              !key
+                ? null
+                : key.startsWith("http")
+                  ? key
+                  : imagesMap[key]
+
             return (
               <FoodItem
                 key={item.idplat}
                 id={item.idplat}
                 name={item.nomplat}
                 description={item.description}
-                image={imagesMap[item.image_name]}
+                image={image}   // 👈 ici changement
                 item={item}
               />
             )
-          })}
+          })
+        }
 
       </div>
 
