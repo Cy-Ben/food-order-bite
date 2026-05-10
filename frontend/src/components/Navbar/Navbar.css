@@ -1,0 +1,148 @@
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px 40px;
+
+  background: transparent; 
+}
+.navbar .logo {
+  width: clamp(90px, 10vw, 150px);
+  height: auto;
+  margin-left: 20px;
+  object-fit: contain;
+}
+
+.cart-wrapper img {
+  width: 150px;
+  height: 150px;
+  
+}
+.navbar-menu{
+    display:flex;
+    list-style: none;
+    gap: 20px;
+    color:#3E2C23;
+    font-size: 18px;
+
+}
+
+
+.navbar-right{
+    display:flex;
+    align-items:center ;
+    gap:8px;
+
+}
+.navbar-button{
+    background-color:transparent;
+    font-size: 18PX;
+    color:white;
+    border:1px solid white;
+    padding:10px 30px;
+    border-radius: 50px;
+    margin-right: 20px;
+    margin-left: 2px;
+    cursor:pointer;
+    transition:0.3s;
+
+
+}
+.navbar-button:hover{
+    color:#3E2C23;
+    background-color: white;
+
+}
+.navbar .active{
+    padding-bottom:2px;
+    border-bottom:2px solid white;
+
+}
+.navbar li{
+    cursor: pointer;
+    color:white;
+
+
+}
+.navbar-menu li {
+  color: white;
+  font-size: 20px;
+  padding: 8px 0;
+}
+.burger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+  z-index: 1100;
+}
+
+
+
+
+
+
+/* =========================
+   BURGER MOBILE
+   ========================= */
+@media (max-width: 768px) {
+
+    .burger {
+    display: block;
+    color: white;
+    position: relative;
+  }
+
+  .navbar-menu {
+    position: absolute;
+    top: 70px;
+    right: 0;
+
+    background: rgba(0,0,0,0.9);
+    width: 200px;
+
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    padding: 20px;
+
+    display: none;
+  }
+
+  .navbar-menu.active-menu {
+    display: flex;
+  }
+
+  
+  .navbar-menu li {
+    color: white;
+    font-size: 16px; /* seulement dans menu mobile */
+  }
+
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  .navbar-button {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+  .navbar {
+    padding: 10px 15px;
+  }
+
+  .navbar-right {
+    margin-right: 10px;
+  }
+ 
+
+}

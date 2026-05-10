@@ -1,0 +1,226 @@
+.clients-page {
+    min-height: 100vh;
+    background: #f1f5f9;
+    padding: 20px;
+}
+
+.clients-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    align-items: center;
+}
+
+.clients-header h2 {
+    margin: 0;
+}
+
+.clients-header input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 250px;
+    background: white;
+}
+
+.clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.client-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    color: #333;
+}
+
+.client-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #3E2C23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 22px;
+    color: white;
+}
+
+.client-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #222;
+}
+
+.client-card p {
+    color: #666;
+    font-size: 13px;
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fidelite {
+    margin-top: 10px;
+    background: #fff7e6;
+    color: #b45309;
+    padding: 8px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+/* MODAL */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+    color: #333;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.modal h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.modal p {
+    color: #555;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-danger {
+    background: #d00000;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #b00000;
+}
+
+.btn-warning {
+    background: #ffb703;
+    color: black;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-warning:hover {
+    background: #e6a500;
+}
+
+.btn-close {
+    background: #eee;
+    color: #333;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    background: #ddd;
+}
+
+/* ========================= TABLETTE LARGE ========================= */
+@media (max-width: 1200px) {
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ========================= TABLETTE ========================= */
+@media (max-width: 1000px) {
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .client-card {
+        padding: 15px;
+        min-height: 180px;
+    }
+
+    .clients-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .clients-header input {
+        width: 100%;
+    }
+}
+
+/* ========================= MOBILE ========================= */
+@media (max-width: 600px) {
+    .clients-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .client-card {
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .clients-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .clients-header input {
+        width: 100%;
+    }
+}
+
+/* ========================= PETIT MOBILE ========================= */
+@media (max-width: 400px) {
+    .client-card {
+        font-size: 14px;
+    }
+}

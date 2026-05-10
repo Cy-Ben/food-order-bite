@@ -1,0 +1,99 @@
+.livreurs-page {
+    min-height: 100vh;
+    background: #f1f5f9;
+    padding: 20px;
+}
+
+.livreurs-page h2 {
+    color: #222;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* GRID */
+.livreurs-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* CARD */
+.livreur-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    color: #333;
+    transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.livreur-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+/* ICON */
+.icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #3E2C23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: white;
+    font-size: 20px;
+}
+
+/* TEXT */
+.livreur-card h3 {
+    margin: 0 0 5px 0;
+    color: #222;
+}
+
+.livreur-card p {
+    margin: 0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+/* FOOTER BADGE */
+.badge {
+    margin-top: auto;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    width: fit-content;
+    font-size: 13px;
+}
+
+.badge.disponible {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.badge.occupe {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1000px) {
+    .livreurs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .livreurs-grid {
+        grid-template-columns: 1fr;
+    }
+}
