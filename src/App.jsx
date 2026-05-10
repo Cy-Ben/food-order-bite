@@ -9,8 +9,9 @@ import Admin from "./pages/Admin/Admin";
 import EspaceClient from "./pages/EspaceClient/EspaceClient";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
 
-import PublicLayout from "./Layouts/PublicLayout";
-import ClientLayout from "./Layouts/ClientLayout";
+
+import PublicLayout from "./layouts/PublicLayout";
+import ClientLayout from "./layouts/ClientLayout";
 import Livreur from "./pages/Livreur/Livreur";
 import ResePrecommande from "./pages/ResePrecommande/ResePrecommande";
 import ProtectedRoute from "./routes/ProtectedRoute"
