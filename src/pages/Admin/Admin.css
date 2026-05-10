@@ -1,0 +1,320 @@
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===================== HERO ===================== */
+.admin-hero {
+  height: 80vh;
+  min-height: 500px;
+  background: url("../../assets/resto.jpg") center/cover no-repeat;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+  z-index: 1;
+}
+
+.admin-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.admin-hero-overlay h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.admin-hero-overlay p {
+  opacity: 0.8;
+}
+
+/* ===================== CONTAINER ===================== */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===================== SIDEBAR ===================== */
+.sidebar {
+  width: 220px;
+  background-color: #3E2C23;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  background: transparent;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.sidebar button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.sidebar .active {
+  background: #3b82f6;
+}
+
+/* ✕ caché sur desktop */
+.close-sidebar {
+  display: none;
+}
+
+/* Burger caché sur desktop */
+.burger-btn {
+  display: none;
+}
+
+/* ===================== CONTENT ===================== */
+.content {
+  flex: 1;
+  padding: 30px;
+  background: #f1f5f9;
+  overflow-y: auto;
+}
+
+/* ===================== STATS ===================== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* ===================== PROFIL ===================== */
+.profil-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.75), rgba(0,0,0,0.4));
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.profil-overlay h2 {
+  color: white;
+  font-size: 28px;
+}
+
+/* ===================== PROMOTIONS ===================== */
+.promotions-container {
+  padding: 10px 0;
+}
+
+.promotions-container h2 {
+  margin-bottom: 20px;
+}
+
+.promo-form {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 24px;
+  align-items: flex-end;
+}
+
+.promo-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.promo-form-row label {
+  font-size: 13px;
+  color: gray;
+}
+
+.promo-form-row select,
+.promo-form-row input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.promo-btn {
+  padding: 10px 20px;
+  background: #3E2C23;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  height: fit-content;
+}
+
+.promo-btn:hover { background: #2d1f18; }
+
+/* ===================== PLATS SELECTION ===================== */
+.promo-plats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.promo-plat-card {
+  padding: 12px;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+  font-size: 14px;
+}
+
+.promo-plat-card:hover { transform: scale(1.03); border-color: #3E2C23; }
+.promo-plat-card.selected { background: #22c55e; color: white; transform: scale(1.05); border-color: #16a34a; }
+
+/* ===================== PROMO LIST ===================== */
+.promo-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.promo-item {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.promo-plat-name { font-weight: bold; font-size: 15px; }
+.promo-taux { background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+.promo-dates { color: gray; font-size: 13px; }
+
+.promo-delete-btn {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.promo-delete-btn:hover { background: #e03030; }
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 768px) {
+
+  .admin-hero {
+    height: 35vh;
+    min-height: unset;
+    margin-bottom: 0;
+  }
+
+  .admin-hero-overlay h1 { font-size: 24px; }
+  .admin-hero-overlay p { font-size: 14px; }
+
+  .admin-container {
+    flex-direction: column;
+  }
+
+  /* Sidebar cachée par défaut sur mobile */
+  .sidebar {
+    display: none;
+    width: 100%;
+  }
+
+  /* Sidebar ouverte */
+  .sidebar.open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ✕ visible dans la sidebar ouverte */
+  .close-sidebar {
+    display: block;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 10px;
+    width: auto;
+    padding: 0;
+  }
+
+  .sidebar h2 { display: none; }
+
+  /* Burger visible sur mobile */
+  .burger-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #3E2C23;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    width: fit-content;
+  }
+
+  .content {
+    padding: 15px;
+    padding-bottom: 60px;
+  }
+
+  .stats { grid-template-columns: 1fr; }
+
+  .promo-form { flex-direction: column; }
+  .promo-btn { width: 100%; }
+  .promo-item { flex-direction: column; align-items: flex-start; }
+  .promo-delete-btn { width: 100%; }
+}

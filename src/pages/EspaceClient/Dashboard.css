@@ -1,0 +1,378 @@
+.client-container {
+  display: flex;
+  min-height: 100vh;
+  margin-top: 90px;
+}
+
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: #3E2C23;
+  padding: 20px;
+  align-self: stretch;
+}
+
+.client-dashboard {
+  flex: 1;
+  padding: 30px;
+  background: #f1f5f9;
+  align-self: stretch;
+}
+
+.close-sidebar {
+  display: none;
+}
+
+.sidebar.hidden {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.sidebar button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.sidebar button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.sidebar .active {
+  background: #3b82f6;
+}
+
+.page h2 {
+  margin-bottom: 20px;
+}
+
+.add-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-box input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.add-box button {
+  background: #3E2C23;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete {
+  color: red;
+  cursor: pointer;
+}
+
+.toggle-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  max-width: 500px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #ff4d2d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.role {
+  color: gray;
+  font-size: 14px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-row span {
+  color: gray;
+}
+
+.adresses-container {
+  max-width: 700px;
+}
+
+.adresses-container h2 {
+  margin-bottom: 20px;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mode-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: black;
+}
+
+.active-mode {
+  background: #3E2C23 !important;
+  color: white !important;
+}
+
+.adresses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.adresse-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.adresse-info p {
+  font-weight: bold;
+  margin: 0 0 4px 0;
+}
+
+.adresse-info small {
+  display: block;
+  color: gray;
+  font-size: 12px;
+}
+
+.adresse-actions .btn-delete {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.no-address {
+  color: gray;
+  font-style: italic;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.suggestion-item:hover {
+  background: #f9f9f9;
+}
+
+.avatar-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #3E2C23;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+}
+
+.gps-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.burger-btn {
+    display: none;
+}
+/* ===================== MOBILE ===================== */
+@media (max-width: 768px) {
+
+  .client-container {
+    flex-direction: column;
+    margin-top: 64px;
+  }
+
+  .sidebar.hidden {
+    display: none !important;
+  }
+
+  .sidebar.open {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .close-sidebar {
+    display: block !important;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 10px;
+  }
+
+  .toggle-btn {
+    display: block;
+  }
+
+  .sidebar h2 {
+    display: none;
+  }
+
+  .client-dashboard {
+    padding: 15px;
+    padding-bottom: 60px; /* 👈 espace avant footer */
+  }
+
+  .adresses-container {
+    max-width: 100%;
+    max-height: none; /* 👈 retire la limite */
+    overflow-y: visible;
+    margin-bottom: 40px;
+  }
+
+  .adresses-list {
+    max-height: none; /* 👈 retire la limite */
+    overflow-y: visible;
+    padding-bottom: 20px;
+  }
+
+  .mode-buttons {
+    flex-direction: column;
+  }
+
+  .adresse-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .adresse-actions .btn-delete {
+    width: 100%;
+  }
+
+  .profile-card {
+    max-width: 100%;
+  }
+
+  .add-box {
+    flex-direction: column;
+  }
+  .burger-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #3E2C23;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+}

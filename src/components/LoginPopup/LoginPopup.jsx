@@ -1,0 +1,272 @@
+import './LoginPopup.css'
+import { assets } from '../../assets/assets'
+import { loginUser, registerUser } from '../../api/auth'
+import React, { useState, useEffect } from 'react'
+import { useAuth } from "../../context/AuthContext"
+import { supabase } from "../../api/supabaseClient"
+import { useNavigate } from "react-router-dom"
+const LoginPopup = ({ setShowLogin, role, setRole, roleFixed, authMode }) => {
+
+  const { login } = useAuth()   // 🔥 AJOUT IMPORTANT
+
+  const [currState, setCurrState] = useState("S'inscrire")
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setCurrState(authMode)
+  }, [authMode])
+
+  const [form, setForm] = useState({
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    password: ""
+  })
+
+  const isAdmin = role === "admin"
+
+  const isValidName = (value) => /^[A-Za-zÀ-ÿ\s]{2,}$/.test(value)
+
+  const isValidEmail = (value) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+
+  const isStrongPassword = (value) =>
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(value)
+
+  const getPasswordStrength = (password) => {
+    let score = 0
+
+    if (password.length >= 8) score++
+    if (/[A-Z]/.test(password)) score++
+    if (/[a-z]/.test(password)) score++
+    if (/\d/.test(password)) score++
+    if (/[^A-Za-z0-9]/.test(password)) score++
+
+    if (score <= 2) return "faible"
+    if (score === 3 || score === 4) return "moyen"
+    return "fort"
+  }
+
+  const strength = getPasswordStrength(form.password)
+
+  const passwordMessage =
+    !form.password
+      ? ""
+      : strength === "faible"
+        ? "Ajoute : 8 caractères, 1 majuscule, 1 chiffre, 1 symbole"
+        : strength === "moyen"
+          ? "Presque bon : ajoute un symbole"
+          : "Mot de passe sécurisé ✔"
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  // ---------------- SIGNUP ----------------
+  const handleSubmit = async (e) => {
+  e.preventDefault()
+
+  if (
+    !form.nom ||
+    !form.prenom ||
+    !form.email ||
+    !form.telephone ||
+    !form.password
+  ) {
+    return alert("Veuillez remplir tous les champs")
+  }
+
+  const rawPhone = form.telephone.replace(/\D/g, "")
+
+  if (!/^[5-7][0-9]{8}$/.test(rawPhone)) {
+    return alert("Téléphone invalide")
+  }
+
+  const cleanPhone = "0" + rawPhone
+
+  if (!isValidName(form.nom)) return alert("Nom invalide")
+  if (!isValidName(form.prenom)) return alert("Prénom invalide")
+  if (!isValidEmail(form.email)) return alert("Email invalide")
+  if (!isStrongPassword(form.password)) return alert("Mot de passe trop faible")
+
+  const { data: existingUser } = await supabase
+    .from("utilisateur")
+    .select("*")
+    .eq("email", form.email)
+    .maybeSingle()
+
+  if (existingUser) {
+    return alert("Cet email existe déjà")
+  }
+
+  try {
+    const user = await registerUser(
+      { ...form, telephone: cleanPhone },
+      role
+    )
+
+    login(user)
+
+    // 🔥 AJOUT REDIRECTION
+    if (role === "client") {
+      navigate("/client")
+    } else if (role === "livreur") {
+      navigate("/livreur")
+    }
+
+    alert("Compte créé ✔")
+    setCurrState("Se connecter")
+
+  } catch (err) {
+    console.log(err)
+    alert("Erreur inscription")
+  }
+}
+
+  // ---------------- LOGIN ----------------
+  const handleLogin = async (e) => {
+    e.preventDefault()
+
+    try {
+      const user = await loginUser(form.email, form.password)
+        console.log("LOGIN USER =", user)
+
+      login(user)
+
+      if (user.role === "client") {
+        navigate("/client")
+      }
+      else if (user.role === "livreur") {
+        navigate("/livreur")
+      }
+      else if (user.role === "admin") {
+        navigate("/admin")
+      }
+
+      setShowLogin(false)
+
+    } catch (err) {
+      alert("Login incorrect")
+    }
+  }
+
+  return (
+    <div className='login-popup'>
+      <form
+        onSubmit={currState === "S'inscrire" ? handleSubmit : handleLogin}
+        className="login-popup-container"
+      >
+
+        <div className="login-popup-title">
+          <h2>{isAdmin ? "Connexion Admin" : currState}</h2>
+          <img
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setShowLogin(false)
+            }}
+            src={assets.close}
+            alt=""
+          />
+        </div>
+
+        <div className="login-popup-inputs">
+
+          {isAdmin ? (
+            <>
+              <input name="email" onChange={handleChange} placeholder="Email admin" required />
+              <input name="password" onChange={handleChange} type="password" placeholder="Mot de passe" required />
+            </>
+          ) : (
+            <>
+              {currState === "S'inscrire" && (
+                <>
+                  <input name="nom" onChange={handleChange} placeholder="Nom" required />
+                  <input name="prenom" onChange={handleChange} placeholder="Prénom" required />
+                  <input name="email" onChange={handleChange} placeholder="Email" required />
+
+                  <div className="phone-wrapper">
+                    <div className="phone-code">🇩🇿 +213</div>
+
+                    <input
+                      name="telephone"
+                      value={form.telephone}
+                      onChange={(e) => {
+                        let v = e.target.value.replace(/\D/g, "")
+                        if (v.length > 9) v = v.slice(0, 9)
+                        v = v.replace(/(\d{2})(?=\d)/g, "$1 ").trim()
+                        setForm({ ...form, telephone: v })
+                      }}
+                      placeholder="54 33 21 22 3"
+                      required
+                    />
+                  </div>
+
+                  <input
+                    name="password"
+                    onChange={handleChange}
+                    type="password"
+                    placeholder="Mot de passe"
+                    required
+                  />
+
+                  <div className="password-info">
+                    <p className={`password-message ${strength}`}>
+                      {passwordMessage}
+                    </p>
+
+                    <div className={`strength ${strength}`}>
+                      Force : {strength}
+                    </div>
+
+                    <div className="bar">
+                      <div className={`fill ${strength}`}></div>
+                    </div>
+                  </div>
+
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    disabled={roleFixed && currState === "S'inscrire"}
+                  >
+                    <option value="client">Client</option>
+                    <option value="livreur">Livreur</option>
+                  </select>
+                </>
+              )}
+
+              {currState === "Se connecter" && (
+                <>
+                  <input name="email" onChange={handleChange} placeholder="Email" required />
+                  <input name="password" onChange={handleChange} type="password" placeholder="Mot de passe" required />
+                </>
+              )}
+            </>
+          )}
+
+        </div>
+
+        <button type="submit">
+          {currState === "S'inscrire" ? "Créer compte" : "Se connecter"}
+        </button>
+
+        {!isAdmin && (
+          <p>
+            {currState === "S'inscrire"
+              ? "Déjà un compte ? "
+              : "Créer un compte "}
+            <span onClick={() =>
+              setCurrState(currState === "S'inscrire" ? "Se connecter" : "S'inscrire")
+            }>
+              {currState === "S'inscrire" ? "Se connecter" : "S'inscrire"}
+            </span>
+          </p>
+        )}
+
+      </form>
+    </div>
+  )
+}
+
+export default LoginPopup
