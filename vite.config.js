@@ -1,16 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
-import viteImagemin from 'vite-plugin-imagemin'
 
 export default defineConfig({
   plugins: [
     react(),
-    viteImagemin({
-      mozjpeg: { quality: 75 },
-      pngquant: { quality: [0.6, 0.8] },
-      webp: { quality: 75 }
-    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
